@@ -1,17 +1,23 @@
 let store = { drivers: [{}], passengers: [{}], trips: [{}] };
+
 let driverId = 0;
+
 class Driver {
-    constructor(name) {
+    public name: string;
+    public id: number;
+
+    constructor(name: string) {
         this.name = name;
         this.id = ++driverId;
+
         store.drivers.push(this);
     }
-    trips() {
+    public trips() {
         return store.trips.filter(trip => {
             return trip.driverId === this.id;
         });
     }
-    passengers() {
+    public passengers() {
         const tripsArray = this.trips().map(trip => trip.passengerId);
         return store.passengers.map(passenger => {
             for (const value of tripsArray) {
@@ -22,19 +28,27 @@ class Driver {
         });
     }
 }
+
 let passengerId = 0;
+
 class Passenger {
-    constructor(name) {
+    public name: string;
+    public id: number;
+
+    constructor(name: string) {
         this.name = name;
         this.id = ++passengerId;
+
         store.passengers.push(this);
     }
-    trips() {
+
+    public trips() {
         return store.trips.filter(trip => {
             return trip.passengerId === this.id;
         });
     }
-    drivers() {
+
+    public drivers() {
         const tripsArray = this.trips().map(trip => trip.driverId);
         return store.drivers.map(driver => {
             for (const value of tripsArray) {
@@ -42,11 +56,16 @@ class Passenger {
                     return driver;
                 }
             }
-        });
-    }
+    });
 }
+
 let tripId = 0;
+
 class Trip {
+    public id: number;
+    public driverId: number;
+    public passengerId: number;
+
     constructor(driver, passenger) {
         this.id = ++tripId;
         if (driver) {
@@ -57,12 +76,13 @@ class Trip {
         }
         store.trips.push(this);
     }
-    trips() {
+
+    public trips() {
         return store.trips.filter(trip => {
             return trip.id === this.id;
         });
     }
-    passenger() {
+    public passenger() {
         const trip = this.trips().map(trip => trip.passengerId);
         return store.passengers.find(passenger => {
             for (const value of trip) {
@@ -72,7 +92,7 @@ class Trip {
             }
         });
     }
-    driver() {
+    public driver() {
         const trip = this.trips().map(trip => trip.driverId);
         return store.drivers.find(driver => {
             for (const value of trip) {
@@ -83,4 +103,3 @@ class Trip {
         });
     }
 }
-//# sourceMappingURL=index.js.map
